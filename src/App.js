@@ -8,6 +8,7 @@ import Login from "./Login";
 import Sidebar from "./Sidebar";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
+import Widgets from "./Widgets";
 
 function App() {
   const user = useSelector(selectUser);
@@ -30,7 +31,7 @@ function App() {
         //user is logged out
       }
     });
-  },[dispatch]);
+  }, [dispatch]);
 
   return (
     <div className="app">
@@ -43,7 +44,7 @@ function App() {
         <div className="app__body">
           <Sidebar />
           <Feed />
-         
+          <Widgets />
         </div>
       )}
     </div>

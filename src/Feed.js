@@ -52,6 +52,8 @@ function Feed() {
     getData();
   }, [posts]);
 
+  
+
   //Loading data from firebase when rendering
 
   const sendPost = async (e) => {
