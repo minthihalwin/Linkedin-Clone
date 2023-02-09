@@ -7,7 +7,7 @@ import Header from "./Header";
 import Login from "./Login";
 import Sidebar from "./Sidebar";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth } from "./util/firebase_controller";
 import Widgets from "./Widgets";
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
         //user is logged out
       }
     });
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="app">

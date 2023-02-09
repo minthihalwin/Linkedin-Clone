@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { login } from "./features/userSlice";
-import { auth } from "./firebase";
+import { auth } from "./util/firebase_controller";
 
 function Login() {
   const [email, setEmail] = useState("");

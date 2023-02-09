@@ -7,67 +7,54 @@ import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import CalendarViewDayIcon from "@mui/icons-material/CalendarViewDay";
 import Post from "./Post";
-import { db } from "./firebase";
 import {
-  collection,
-  addDoc,
-  getDocs,
   serverTimestamp,
-  orderBy,
-  query,
+  onSnapshot,
 } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { selectUser } from "./features/userSlice";
 import FlipMove from "react-flip-move";
+import { addPost, postsCollection_query } from "./util/firebase_controller";
 
 function Feed() {
   const user = useSelector(selectUser);
   const [input, setInput] = useState("");
   const [posts, setPosts] = useState([]);
 
-  //Loading data from firebase when rendering
-  // useEffect(() => {
-  //   db.collection("posts").getDocs((snapshot) =>
-  //   setPosts(
-  //     snapshot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       data: doc.data(),
-  //     }))
-  //   )
-  //   )
-  // },[])
 
   useEffect(() => {
-    const getData = async () => {
-      const data = await getDocs(
-        query(collection(db, "posts"), orderBy("timestamp", "desc"))
+    onSnapshot(postsCollection_query, (snapshot) => {
+      setPosts(
+        snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            data: doc.data(),
+          };
+        })
       );
-      setPosts(data.docs.map((doc) => ({ id: doc.id, data: doc.data() })));
-
-      // setPosts(data.docs.map((doc) => ({
-      //   id: doc.id,
-      //   data: doc.data(),
-      // })))
-    };
-    getData();
-  }, [posts]);
-
-  
+    });
+  }, []);
 
   //Loading data from firebase when rendering
+
 
   const sendPost = async (e) => {
     e.preventDefault();
-
-    await addDoc(collection(db, "posts"), {
+    const newPost = {
       name: user.displayName,
       description: user.email,
       message: input,
       photoUrl: user.photoUrl || "",
       timestamp: serverTimestamp(),
-    });
+    };
+    try {
+      addPost(newPost);
+    }catch(err) {
+      alert(err.message);
+    }
     setInput("");
   };
+
   return (
     <div className="feed">
       <div className="feed__inputContainer">

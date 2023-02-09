@@ -10,10 +10,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useDispatch } from "react-redux";
 import { logout } from "./features/userSlice";
 import { signOut } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth } from "./util/firebase_controller";
 
 function Header() {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
   const logoutOfApp = () => {
     dispatch(logout());
